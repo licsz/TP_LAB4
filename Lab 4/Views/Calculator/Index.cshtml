@@ -1,0 +1,64 @@
+﻿@model Lab_4.Models.CalculatorViewModel
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <link rel="stylesheet" type="text/css" href="~/Content/Site.css" />
+  <title>Калькулятор</title>
+</head>
+<body>
+<h2>Calculator</h2>
+
+    @using (Html.BeginForm())
+    {
+        <div>
+            @Html.LabelFor(m => m.Number1)
+            @Html.TextBoxFor(m => m.Number1, new { @class = "form-control" })
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Number2)
+            @Html.TextBoxFor(m => m.Number2, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Number2, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            @Html.LabelFor(m => m.SelectedOperation)
+            @Html.ListBoxFor(m => m.SelectedOperation, Model.Operations, new { @class = "form-control" })
+        </div>
+        <div>
+            <input type="submit" value="Calculate" class="btn btn-primary" />
+             <input type="submit" name="action" value="Clear" class="btn btn-secondary" />
+        </div>
+        <div>
+            @if (Model.Result.HasValue)
+            {
+                    <h3>Result: @Model.Result.Value</h3>
+                    var operationSymbol = Model.SelectedOperation;
+                    operationSymbol = operationSymbol.Replace("Add", "+").Replace("Subtract", "-").Replace("Multiply", "*").Replace("Divide", "/");
+                @Html.ActionLink("View Details", "Result", "Calculator", new { number1 = Model.Number1, number2 = Model.Number2, operation = operationSymbol, result = Model.Result }, null)
+                var predefinedValue = ViewBag.PredefinedValue as int?;
+                if (predefinedValue.HasValue && Model.Result.Value == predefinedValue.Value)
+                {
+                            <p>The result is equal to the predefined value: @predefinedValue.Value</p>
+                }
+                else
+                {
+                            <p>The result is different from the predefined value: @predefinedValue.Value</p>
+                }
+            }
+        </div>
+    }
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="validation-summary-errors">
+            @Html.ValidationSummary()
+        </div>
+    }
+
+    @section Scripts {
+        <!-- Добавьте сюда любые скрипты, специфичные для этого представления -->
+    }
+    </body>

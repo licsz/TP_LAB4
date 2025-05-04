@@ -1,0 +1,15 @@
+﻿@{
+    var number1 = ViewData["number1"];
+    var number2 = ViewData["number2"];
+    var operation = ViewData["operation"];
+    var result = ViewData["result"];
+}
+
+<h2>Operation Result</h2>
+
+<p>Number1: @number1</p>
+<p>Number2: @number2</p>
+<p>Operation: @operation</p>
+<p>Result: @result</p>
+
+<a href="@Url.Action("Index", "Calculator")">Back to Calculator</a>
